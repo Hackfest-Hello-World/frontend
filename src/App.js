@@ -10,29 +10,112 @@ import LiveForms from './pages/LiveForms';
 import { Home } from './pages';
 import { FaExclamationTriangle } from 'react-icons/fa';
 import InstaPage from './pages/InstaPage';
+import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const App = () => {
-  const { currentColor, setCurrentColor, currentMode, setCurrentMode, activeMenu, themeSettings, setThemeSettings } = useStateContext();
+  const { 
+    currentColor, 
+    currentMode, 
+    activeMenu, 
+    themeSettings, 
+    setThemeSettings,
+    addNotification,
+    setCurrentColor,
+    setCurrentMode
+  } = useStateContext();
+  
   const [showBanner, setShowBanner] = useState(false);
-
+  const [currentNotification, setCurrentNotification] = useState(null);
+  const [lastChecked, setLastChecked] = useState(new Date());
+  
+  // Initialize theme settings
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
     const currentThemeMode = localStorage.getItem('themeMode');
-    if (currentThemeColor, currentThemeMode) {
+    if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
     }
   }, []);
 
-  const handleTestBanner = () => {
+  // Poll for new notifications
+  useEffect(() => {
+    const checkForNotifications = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/notifications', {
+          params: {
+            since: lastChecked.toISOString()
+          }
+        });
+        
+        if (response.data && response.data.length > 0) {
+          // Process new notifications
+          response.data.forEach(notification => {
+            const newNotification = {
+              id: notification._id,
+              title: notification.category || 'New Alert',
+              message: notification.reasoning || 'New notification received',
+              type: notification.classification || 'info',
+              severity: notification.severity || 'medium',
+              createdAt: new Date(notification.createdAt || new Date()).toISOString()
+            };
+            
+            // addNotification(newNotification);
+            showNewNotification(newNotification);
+          });
+          
+          // Update last checked time
+          setLastChecked(new Date());
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    // Check every 30 seconds (adjust as needed)
+    const interval = setInterval(checkForNotifications, 10000);
+    
+    // Initial check
+    // checkForNotifications();
+    
+    return () => clearInterval(interval);
+  }, [lastChecked]);
+
+  const showNewNotification = (notification) => {
+    setCurrentNotification({
+      title: notification.title,
+      message: notification.message,
+      severity: notification.severity
+    });
     setShowBanner(true);
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      setShowBanner(false);
+    }, 5000);
+  };
+
+  const handleTestBanner = () => {
+    const testNotification = {
+      id: 'test-' + Date.now(),
+      title: "Test Notification",
+      message: "This is a test notification banner.",
+      type: "info",
+      severity: "medium",
+      createdAt: new Date().toISOString()
+    };
+    // addNotification(testNotification);
+    showNewNotification(testNotification);
   };
 
   return (
+    <>
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
+      
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
-          {/* Test Button */}
+          {/* Test Button (can be removed in production) */}
           <div className="fixed left-4 bottom-4 z-1000">
             <button
               type="button"
@@ -78,14 +161,15 @@ export const App = () => {
               <Navbar />
             </div>
             
-            {/* Banner placed right after navbar */}
-            <div className="mt-16"> {/* Adjust this margin to match your navbar height */}
+            {/* Notification Banner */}
+            <div className="mt-16">
               <Banner
                 show={showBanner}
                 onClose={() => setShowBanner(false)}
                 icon={<FaExclamationTriangle />}
-                title="Important Notification"
-                description="This is a temporary banner that will disappear in 3 seconds."
+                title={currentNotification?.title || "Notification"}
+                description={currentNotification?.message || ""}
+                severity={currentNotification?.severity || "medium"}
               />
             </div>
 
@@ -97,7 +181,7 @@ export const App = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/liveforms" element={<LiveForms />} />
                 <Route path="/twitter-analytics" element={<SocialMediaPage />} />
-                <Route path="/instagram-analytics" element={<InstaPage  />} />
+                <Route path="/instagram-analytics" element={<InstaPage />} />
                 <Route path="/youtube-analytics" element={<SocialMediaPage />} />
               </Routes>
             </div>
@@ -105,6 +189,8 @@ export const App = () => {
           </div>
         </div>
       </BrowserRouter>
+      
     </div>
+    </>
   );
 };
