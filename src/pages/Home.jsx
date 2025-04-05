@@ -215,7 +215,7 @@ const Home = () => {
               </div>
             </div>
           </Link>
-          <Link to="/youtube-analsis">
+          <Link to="/youtube-analytics">
             <div className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md" style={{ backgroundColor: '#FF0000' }}>
               <div className="flex justify-between items-center h-full">
                 <div>
