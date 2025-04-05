@@ -630,8 +630,8 @@ export const trending = [
   {
     icon: <BsInstagram />,
     amount: '',
-    title: '#Chillr_vibes',
-    desc: 'Chillr is real chilling',
+    title: '#ISM2IIT',
+    desc: 'IITISM',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
     pcColor: 'green-600',

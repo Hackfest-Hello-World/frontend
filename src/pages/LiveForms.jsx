@@ -9,9 +9,10 @@ const LiveForms = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [expandedRow, setExpandedRow] = useState(null)
   const [formsData, setFormsData] = useState([])
-
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       const response = await fetch(
         'https://5qb2m665-5010.inc1.devtunnels.ms' + '/forms/getAll'
       )
@@ -19,6 +20,7 @@ const LiveForms = () => {
       const data = await response.json()
       // print(data)
       setFormsData(data)
+      setLoading(false)
       // return data
     }
     fetchData()
@@ -288,7 +290,9 @@ const LiveForms = () => {
       {filteredForms.length === 0 && (
         <div className='text-center py-10'>
           <p className='text-gray-500 dark:text-gray-400'>
-            No forms found matching your search criteria.
+            {loading
+              ? 'Loading...'
+              : 'No forms found matching your search criteria.'}
           </p>
         </div>
       )}
