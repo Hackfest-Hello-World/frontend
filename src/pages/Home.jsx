@@ -232,7 +232,6 @@ const Home = () => {
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md">
           <div className="flex justify-between items-center mb-6">
             <p className="text-xl font-semibold">Trending Now</p>
-            <DropDown currentMode={currentMode} />
           </div>
           <div className="space-y-4">
             {trending.map((item) => (
@@ -258,7 +257,7 @@ const Home = () => {
             ))}
           </div>
           <div className="flex items-center justify-between border-t-1 border-color mt-6 pt-4">
-            <p className='text-gray-400 text-sm'>Top 5 Trending hashtags</p>
+            <p className='text-gray-400 text-sm'>Top Trending hashtags</p>
           </div>
         </div>
 
@@ -266,7 +265,6 @@ const Home = () => {
         <div className='bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md lg:col-span-2'>
           <div className="flex justify-between items-center mb-6">
             <p className="text-xl font-semibold">Sentiments Overview</p>
-            <DropDown currentMode={currentMode} />
           </div>
           <div className="w-full h-full">
             <LineChart width="100%" height="100%" currentMode={currentMode} />
