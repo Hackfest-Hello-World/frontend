@@ -9,6 +9,7 @@ import SocialMediaPage from './pages/SocialMediaPage';
 import LiveForms from './pages/LiveForms';
 import { Home } from './pages';
 import { FaExclamationTriangle } from 'react-icons/fa';
+import InstaPage from './pages/InstaPage';
 
 export const App = () => {
   const { currentColor, setCurrentColor, currentMode, setCurrentMode, activeMenu, themeSettings, setThemeSettings } = useStateContext();
@@ -96,7 +97,7 @@ export const App = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/liveforms" element={<LiveForms />} />
                 <Route path="/twitter-analytics" element={<SocialMediaPage />} />
-                <Route path="/instagram-analytics" element={<SocialMediaPage  />} />
+                <Route path="/instagram-analytics" element={<InstaPage  />} />
                 <Route path="/youtube-analytics" element={<SocialMediaPage />} />
               </Routes>
             </div>
