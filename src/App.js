@@ -12,6 +12,7 @@ import { FaExclamationTriangle } from 'react-icons/fa'
 import InstaPage from './pages/InstaPage'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css'
+import YoutubePage from './pages/YoutubePage'
 
 export const App = () => {
   const {
@@ -189,10 +190,7 @@ export const App = () => {
                     element={<SocialMediaPage />}
                   />
                   <Route path='/instagram-analytics' element={<InstaPage />} />
-                  <Route
-                    path='/youtube-analytics'
-                    element={<SocialMediaPage />}
-                  />
+                  <Route path='/youtube-analytics' element={<YoutubePage />} />
                 </Routes>
               </div>
               <Footer />
