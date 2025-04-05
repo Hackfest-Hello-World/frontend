@@ -147,7 +147,20 @@ const Home = () => {
             <p className="text-2xl font-semibold">Instagram</p>
             <p className="text-gray-400">Detailed Sentiment Analysis</p>
           </div>
-
+        </div>
+        <div
+        className='rounded-2xl shadow-2xl md:w-300 p-4 m-3'
+        style={{ backgroundColor:currentColor}}
+        >
+          <div className="flex justify-between items-center">
+            <div>
+            
+              <p className="text-2xl text-white font-semibold mt-8">
+                Twitter
+              </p>
+              <p className="text-gray-200">Detailed Sentiment Analysis</p>
+            </div>
+          </div>
         </div>
         
       </div>
