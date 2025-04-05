@@ -628,7 +628,7 @@ export const trending = [
     pcColor: 'red-600',
   },
   {
-    icon: <BsLinkedin />,
+    icon: <BsInstagram />,
     amount: '',
     title: '#Chillr_vibes',
     desc: 'Chillr is real chilling',
@@ -637,7 +637,7 @@ export const trending = [
     pcColor: 'green-600',
   },
   {
-    icon: <BsFacebook />,
+    icon: <BsTwitter />,
     amount: '',
     title: '#Cool',
     desc: '#Awesome',
