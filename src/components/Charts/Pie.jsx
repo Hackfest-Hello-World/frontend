@@ -16,7 +16,7 @@ const Doughnut = ({ id , data, legendVisibility, height}) => {
         <Inject services={[ AccumulationLegend, PieSeries, AccumulationDataLabel, AccumulationTooltip]} />
         <AccumulationSeriesCollectionDirective>
             <AccumulationSeriesDirective
-            name='Sale'
+            name='Sentiment'
             dataSource={data}
             xName='x'
             yName='y'
