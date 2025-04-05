@@ -66,14 +66,14 @@ export const App = () => {
                 <Route path='/home' element={<Home/>} />
                 {/* App */}
                 {/* Charts */}
-                <Route path='/line' element={<Line/>} />
+                {/* <Route path='/line' element={<Line/>} />
                 <Route path='/pie' element={<Pie/>} />
                 <Route path='/stacked' element={<StackedChart/>} />
                 <Route path='/area' element={<Area/>} />
                 <Route path='/bar' element={<Bar/>} />
                 <Route path='/color-mapping' element={<ColorMapping/>} />
                 <Route path='/financial' element={<Financial/>} />
-                <Route path='/pyramid' element={<Pyramid/>} />
+                <Route path='/pyramid' element={<Pyramid/>} /> */}
               </Routes>
             </div>
             <Footer/>

@@ -83,16 +83,16 @@ const Home = () => {
           <div className="flex justify-between">
             <p className="font-semibold text-xl">Sentiment Analysis</p>
             <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-green-400 hover:drop-shadow-xl">
+              <p className="flex items-center gap-2 text-blue-400 hover:drop-shadow-xl">
                 <span><GoPrimitiveDot/></span>
                 <span>Positive</span>
               </p>
-              <p className="flex items-center gap-2 text-red-600 hover:drop-shadow-xl">
+              <p className="flex items-center gap-2 text-green-400 hover:drop-shadow-xl">
                 <span><GoPrimitiveDot/></span>
                 <span>Negative</span>
               </p>
               
-              <p className="flex items-center gap-2 text-gray-200 hover:drop-shadow-xl">
+              <p className="flex items-center gap-2 text-gray-400 hover:drop-shadow-xl">
                 <span><GoPrimitiveDot/></span>
                 <span>Neutral</span>
               </p>
@@ -124,6 +124,32 @@ const Home = () => {
               <Stacked currentMode={currentMode} width='320px' height='360px' />
             </div>
           </div>
+          
+      </div>
+      <div>
+        <div
+        className='rounded-2xl shadow-2xl md:w-300 p-4 m-3'
+        style={{ backgroundColor:currentColor}}
+        >
+          <div className="flex justify-between items-center">
+            <div>
+            
+              <p className="text-2xl text-white font-semibold mt-8">
+                Twitter
+              </p>
+              <p className="text-gray-200">Detailed Sentiment Analysis</p>
+            </div>
+          </div>
+        </div>
+
+        <div className='bg-white dark:text-gray-200 dark:bg-secondary-dark-bg shadow-2xl rounded-2xl md:w-300 p-8 m-3 flex justify-center items-center gap-10'>
+          <div>
+            <p className="text-2xl font-semibold">Instagram</p>
+            <p className="text-gray-400">Detailed Sentiment Analysis</p>
+          </div>
+
+        </div>
+        
       </div>
       <div>
       </div>
