@@ -1,7 +1,7 @@
 import React from 'react';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
-import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsTwitter, BsInstagram, BsYoutube, BsLinkedin, BsFacebook } from 'react-icons/bs';
 import { BiColorFill, BiHomeCircle } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
@@ -584,15 +584,6 @@ export const earningData = [
     pcColor: 'red-600',
   },
   {
-    icon: <BsBoxSeam />,
-    amount: '4,396',
-    percentage: '+23%',
-    title: 'In-App Updates',
-    iconColor: 'rgb(255, 244, 229)',
-    iconBg: 'rgb(254, 201, 15)',
-    pcColor: 'green-600',
-  },
-  {
     icon: <FiBarChart />,
     amount: '423,39',
     percentage: '+38%',
@@ -615,49 +606,47 @@ export const earningData = [
 
 export const trending = [
   {
-    icon: <BsCurrencyDollar />,
-    amount: '+$350',
-    title: 'Paypal Transfer',
-    desc: 'Money Added',
+    icon: <BsTwitter />,
+    amount: '',
+    title: 'Going good',
+    desc: '#Hackfest_2025',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
     pcColor: 'green-600',
   },
   {
-    icon: <BsShield />,
-    amount: '-$560',
-    desc: 'Bill Payment',
-    title: 'Wallet',
+    icon: <BsInstagram />,
+    amount: '',
+    desc: '#IIT Dhanbad',
+    title: '#IIT Dhanbad',
     iconColor: 'rgb(0, 194, 146)',
     iconBg: 'rgb(235, 250, 242)',
     pcColor: 'red-600',
   },
   {
-    icon: <FiCreditCard />,
-    amount: '+$350',
-    title: 'Credit Card',
-    desc: 'Money reversed',
+    icon: <BsLinkedin />,
+    amount: '',
+    title: '#Chillr_vibes',
+    desc: 'Chillr is real chilling',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
-
     pcColor: 'green-600',
   },
   {
-    icon: <TiTick />,
-    amount: '+$350',
-    title: 'Bank Transfer',
-    desc: 'Money Added',
-
+    icon: <BsFacebook />,
+    amount: '',
+    title: '#Cool',
+    desc: '#Awesome',
     iconColor: 'rgb(228, 106, 118)',
     iconBg: 'rgb(255, 244, 229)',
     pcColor: 'green-600',
   },
   {
-    icon: <BsCurrencyDollar />,
-    amount: '-$50',
-    percentage: '+38%',
-    title: 'Refund',
-    desc: 'Payment Sent',
+    icon: <BsYoutube />,
+    amount: '',
+    percentage: '',
+    title: 'Workshop',
+    desc: 'Knowing about the tools',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
     pcColor: 'red-600',
@@ -3032,14 +3021,14 @@ export const lineChartData = [
 export const dropdownData = [
   {
     Id: '1',
-    Time: 'March 2021',
+    Time: 'Today',
   },
   {
     Id: '2',
-    Time: 'April 2021',
+    Time: 'yesterday',
   }, {
     Id: '3',
-    Time: 'May 2021',
+    Time: 'Live',
   },
 ];
 export const SparklineAreaData = [
