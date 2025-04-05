@@ -1,70 +1,153 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import { Doughnut, LineChart, SparkLine } from '../components';
+import { Doughnut, LineChart } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
+
+const sentimentLabels = {
+  LABEL_0: 'Negative',
+  LABEL_1: 'Positive',
+  LABEL_2: 'Neutral'
+};
 
 const SocialMediaPage = () => {
   const { platform } = useParams();
   const { currentColor, currentMode } = useStateContext();
+  const [data, setData] = useState(null);
+  const [sentimentTrend, setSentimentTrend] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sample data - in a real app, this would come from an API
-  const sampleData = {
-    text: "ISM is turning into IIT #hackfest",
-    sentiment: "LABEL_0",
-    confidence: 0.5631017088890076,
-    emotions: [
-      {
-        label: "anger",
-        score: 0.9815769791603088,
-        urgent: false,
-        timestamp: "2025-04-04T21:44:48.527+00:00",
-        tweet_id: "1908222857559126239"
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/social/${platform}`);
+        // const result = await response.json();
+        const result = {
+          "platform": "Twitter",
+          "recent_tweets": [
+            {
+              "sentiment": "LABEL_0",
+              "text": "@Shebas_10dulkar Also most man of match Top 3 ipl teams csk,mi,kkr ?\nKl rahul Right??",
+              "timestamp": "Sat, 05 Apr 2025 14:24:26 GMT",
+              "uri": "https://x.com/supr20456/status/1908526124264501460"
+            },
+            {
+              "sentiment": "LABEL_0",
+              "text": "Match 18. 5.2: Glenn Maxwell to Sanju Samson 4 runs, Rajasthan Royals 51/0 https://t.co/kjdEJyebLM #PBKSvRR #TATAIPL #IPL2025",
+              "timestamp": "Sat, 05 Apr 2025 14:24:26 GMT",
+              "uri": "https://x.com/IPL/status/1908526114286559736"
+            },
+            {
+              "sentiment": "LABEL_1",
+              "text": "@_FaridKhan its 3-0.....Pakistan Vs New Zealand... Think about that.. .\n\nDon't need porkistani in IPL",
+              "timestamp": "Sat, 05 Apr 2025 14:24:25 GMT",
+              "uri": "https://x.com/Chiragsoni8943/status/1908526108883993033"
+            },
+            {
+              "sentiment": "LABEL_0",
+              "text": "CSK batting order changes: Good move? \ud83d\udc4d or \ud83e\udd14? #CSK #IPL #CSKvDC",
+              "timestamp": "Sat, 05 Apr 2025 14:24:25 GMT",
+              "uri": "https://x.com/ArvindKuma24798/status/1908526085647610121"
+            },
+            {
+              "sentiment": "LABEL_0",
+              "text": "@Being_Dhruv_ I think franchise doesn't want to let him go either. It works both ways. Individual worshipping is not new in IPL .... like RCB/Kohli.. CSK/Dhoni.. Rohit/MI... as long as the team is winning. But if team suffers.. retrospect and take action too.",
+              "timestamp": "Sat, 05 Apr 2025 14:24:25 GMT",
+              "uri": "https://x.com/Sophrosyne4U/status/1908526068006367245"
+            }
+          ],
+          "stats": {
+            "comments": {
+              "negative": {
+                "count": 23,
+                "percentage": 100.0
+              },
+              "neutral": {
+                "count": 0,
+                "percentage": 0.0
+              },
+              "positive": {
+                "count": 0,
+                "percentage": 0.0
+              },
+              "total": 23
+            },
+            "tweets": {
+              "negative": {
+                "count": 63,
+                "percentage": 38.41
+              },
+              "neutral": {
+                "count": 0,
+                "percentage": 0.0
+              },
+              "positive": {
+                "count": 101,
+                "percentage": 61.59
+              },
+              "total": 164
+            }
+          }
+        }
+        setData(result);
+        processTrendData(result.recent_tweets);
+      } catch (error) {
+        console.error('Error fetching social media data:', error);
       }
-    ],
-    stats: {
-      positive: 65,
-      negative: 20,
-      neutral: 15,
-      total: 100
-    },
-    recentPosts: [
-      {
-        id: 1,
-        text: "Excited for the new semester! #college",
-        sentiment: "Positive",
-        confidence: 0.85
-      },
-      {
-        id: 2,
-        text: "Not happy with the new rules #frustrated",
-        sentiment: "Negative",
-        confidence: 0.78
-      },
-      {
-        id: 3,
-        text: "Just posted a new photo",
-        sentiment: "Neutral",
-        confidence: 0.65
-      }
-    ]
+    };
+
+    fetchData();
+  }, [platform]);
+
+  const processTrendData = (tweets) => {
+    const now = new Date();
+    const trendData = [];
+
+    for (let i = 4; i >= 0; i--) {
+      const hourStart = new Date(now.getTime() - ((i + 1) * 60 * 60 * 1000));
+      const hourEnd = new Date(now.getTime() - (i * 60 * 60 * 1000));
+
+      const hourLabel = hourEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const hourTweets = tweets.filter(tweet => {
+        const tweetDate = new Date(tweet.timestamp);
+        return tweetDate >= hourStart && tweetDate < hourEnd;
+      });
+
+      const positiveCount = hourTweets.filter(t => sentimentLabels[t.sentiment] === 'Positive').length;
+      const negativeCount = hourTweets.filter(t => sentimentLabels[t.sentiment] === 'Negative').length;
+      const neutralCount = hourTweets.filter(t => sentimentLabels[t.sentiment] === 'Neutral').length;
+      const totalCount = hourTweets.length;
+
+      trendData.push({
+        hour: hourLabel,
+        positive: totalCount > 0 ? Math.round((positiveCount / totalCount) * 100) : 0,
+        negative: totalCount > 0 ? Math.round((negativeCount / totalCount) * 100) : 0,
+        neutral: totalCount > 0 ? Math.round((neutralCount / totalCount) * 100) : 0,
+        totalPosts: totalCount
+      });
+    }
+
+    setSentimentTrend(trendData);
+    setLoading(false);
   };
 
-  const sentimentLabels = {
-    "LABEL_0": "Negative",
-    "LABEL_1": "Positive",
-    "LABEL_2": "Neutral"
-  };
+  if (loading || !data) {
+    return (
+      <div className="mt-12 flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
-  const emotionColors = {
-    anger: "#FF5733",
-    joy: "#FFC300",
-    sadness: "#3498DB",
-    fear: "#9B59B6",
-    surprise: "#1ABC9C",
-    love: "#E74C3C"
-  };
+  const lineChartData = sentimentTrend.map(hourData => ({
+    x: hourData.hour,
+    positive: hourData.positive,
+    negative: hourData.negative,
+    neutral: hourData.neutral,
+    totalPosts: hourData.totalPosts
+  }));
 
   return (
     <div className="mt-12">
@@ -72,98 +155,77 @@ const SocialMediaPage = () => {
         <Link to="/" className="flex items-center mr-4">
           <BsArrowLeft className="text-2xl" />
         </Link>
-        <h1 className="text-3xl font-bold capitalize">{platform} Analytics</h1>
-      </div>
-
-      <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl p-6 m-6 shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Recent Post Analysis</h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div>
-            <p className="text-gray-600 dark:text-gray-300 mb-2">Post Content:</p>
-            <p className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">{sampleData.text}</p>
-            
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                <p className="text-gray-600 dark:text-gray-300">Sentiment:</p>
-                <p className="font-semibold capitalize">
-                  {sentimentLabels[sampleData.sentiment] || sampleData.sentiment}
-                </p>
-              </div>
-              <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                <p className="text-gray-600 dark:text-gray-300">Confidence:</p>
-                <p className="font-semibold">
-                  {(sampleData.confidence * 100).toFixed(2)}%
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className='h-full'>
-            <h3 className="text-lg font-semibold mb-3">Emotion Analysis</h3>
-            <div className="h-full">
-              <Doughnut 
-                id="emotion-chart"
-                data={sampleData.emotions.map(emotion => ({
-                  x: emotion.label,
-                  y: emotion.score * 100,
-                  text: `${emotion.label} (${(emotion.score * 100).toFixed(1)}%)`,
-                  fill: emotionColors[emotion.label] || currentColor
-                }))}
-                legendVisiblity={true}
-                height="100%"
-              />
-            </div>
-          </div>
-        </div>
+        <h1 className="text-3xl font-bold capitalize">{data.platform} Analytics</h1>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl m-6 p-6 shadow-lg">
           <h2 className="text-xl font-semibold mb-4">Sentiment Distribution</h2>
-          <div className="h-full">
-            <Doughnut 
-              id="sentiment-chart"
-              data={[
-                { x: 'Positive', y: sampleData.stats.positive, text: `${sampleData.stats.positive}%`, fill: '#4CAF50' },
-                { x: 'Negative', y: sampleData.stats.negative, text: `${sampleData.stats.negative}%`, fill: '#F44336' },
-                { x: 'Neutral', y: sampleData.stats.neutral, text: `${sampleData.stats.neutral}%`, fill: '#9E9E9E' }
-              ]}
-              legendVisiblity={true}
-              height="100%"
-            />
-          </div>
+          <Doughnut
+            id="sentiment-chart"
+            data={['positive', 'negative', 'neutral'].map(type => ({
+              x: type.charAt(0).toUpperCase() + type.slice(1),
+              y: data.stats.tweets[type].percentage,
+              text: `${data.stats.tweets[type].percentage.toFixed(1)}%`,
+              fill: type === 'positive' ? '#4CAF50' : type === 'negative' ? '#F44336' : '#9E9E9E'
+            }))}
+            legendVisiblity={true}
+            height="100%"
+          />
         </div>
 
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl m-6 p-6 shadow-lg">
-          <h2 className="text-xl font-semibold mb-4">Sentiment Trend</h2>
-          <div className="h-full">
-            <LineChart 
-              width="100%"
-              height="100%"
-              currentMode={currentMode}
-            />
-          </div>
+          <h2 className="text-xl font-semibold mb-4">Sentiment Trend (Last 5 Hours)</h2>
+          <LineChart
+            width="100%"
+            height="100%"
+            currentMode={currentMode}
+            data={lineChartData}
+            xAxisField="x"
+            yAxisField="percentage"
+            lineFields={[
+              { name: 'positive', label: 'Positive', color: '#4CAF50' },
+              { name: 'negative', label: 'Negative', color: '#F44336' },
+              { name: 'neutral', label: 'Neutral', color: '#9E9E9E' }
+            ]}
+            xAxisLabel="Time"
+            yAxisLabel="Sentiment Percentage (%)"
+            yAxisMin={0}
+            yAxisMax={100}
+            tooltipTemplate={(data) => (
+              `<div class="p-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+                <p class="font-semibold">${data.x}</p>
+                <p>Positive: ${data.positive}%</p>
+                <p>Negative: ${data.negative}%</p>
+                <p>Neutral: ${data.neutral}%</p>
+                <p class="text-sm text-gray-500">Total posts: ${data.totalPosts}</p>
+              </div>`
+            )}
+          />
         </div>
       </div>
 
       <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl m-6 p-6 shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Recent Posts</h2>
         <div className="space-y-4">
-          {sampleData.recentPosts.map(post => (
-            <div key={post.id} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-              <p className="mb-2">{post.text}</p>
-              <div className="flex justify-between text-sm">
-                <span className={`px-2 py-1 rounded-full ${
-                  post.sentiment === 'Positive' ? 'bg-green-100 text-green-800' :
-                  post.sentiment === 'Negative' ? 'bg-red-100 text-red-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
-                  {post.sentiment}
-                </span>
-                <span>Confidence: {(post.confidence * 100).toFixed(2)}%</span>
+          {data.recent_tweets.map((tweet, index) => {
+            const postTime = new Date(tweet.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            return (
+              <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <a href={tweet.uri} target="_blank" rel="noopener noreferrer" className="block mb-2 hover:underline">{tweet.text}</a>
+                <div className="flex justify-between text-sm">
+                  <span className={`px-2 py-1 rounded-full ${
+                    sentimentLabels[tweet.sentiment] === 'Positive' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                    sentimentLabels[tweet.sentiment] === 'Negative' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' :
+                    'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                  }`}>
+                    {sentimentLabels[tweet.sentiment]}
+                  </span>
+                  <span className="text-gray-500">{postTime}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

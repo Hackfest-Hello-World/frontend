@@ -3,7 +3,6 @@ import { BsCurrencyDollar } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { GoPrimitiveDot } from 'react-icons/go';
 import { FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
-import { IoIosMore } from 'react-icons/io';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Doughnut, LineChart, SparkLine, Stacked, Button } from '../components';
 import { useStateContext } from '../contexts/ContextProvider';
@@ -23,7 +22,7 @@ const DropDown = ({ currentMode }) => (
     <DropDownListComponent
       id='time'
       fields={{ text: 'Time', value: 'Id' }}
-      style={{ border: 'none', color: currentMode === 'Dark' && 'white' }}
+      style={{ border: 'none', color: currentMode === 'Dark' ? 'white' : undefined }}
       value='1'
       dataSource={dropdownData}
       popupHeight="220px"
@@ -34,30 +33,55 @@ const DropDown = ({ currentMode }) => (
 
 const Home = () => {
   const { currentColor, currentMode } = useStateContext();
-  const [sentimentData, setSentimentData] = useState({
-    x_poss: 25,
-    x_neg: 17,
-    insta_poss: 23,
-    insta_neg: 12,
-    total_pos: 48,
-    total_neg: 29,
-    total_neutral: 23,
-    overallSentiment: 'Positive'
-  });
+  const [sentimentData, setSentimentData] = useState({});
 
   useEffect(() => {
     const fetchSentimentData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/');
-        const data = await response.json();
+        // const response = await fetch('https://api.example.com/sentiment-data'); // Replace with your API endpoint
+        // const data = await response.json();
+        const data = {
+          "overall": {
+            "negative": {
+              "count": 64,
+              "percentage": 37.21
+            },
+            "neutral": {
+              "count": 0,
+              "percentage": 0.0
+            },
+            "positive": {
+              "count": 108,
+              "percentage": 62.79
+            },
+            "total": 172
+          },
+          "platforms": {
+            "instagram": {
+              "negative": 12.5,
+              "neutral": 0.0,
+              "positive": 87.5
+            },
+            "twitter": {
+              "negative": 38.41,
+              "neutral": 0.0,
+              "positive": 61.59
+            },
+            "youtube": {
+              "negative": 0,
+              "neutral": 0,
+              "positive": 0
+            }
+          },
+          "trend_insta": [],
+          "trend_twitter": []
+        };
 
-        console.log('Fetched data:', data);
-        
-        const total_pos = data.x_poss + data.insta_poss;
-        const total_neg = data.x_neg + data.insta_neg;
-        const total_neutral = data.total_neutral || 0; // Assuming total_neutral is part of the response
+        const total_pos = data.overall.positive.count;
+        const total_neg = data.overall.negative.count;
+        const total_neutral = data.overall.neutral.count || 0;
         const overallSentiment = total_neg > total_pos ? 'Negative' : 'Positive';
-        
+
         setSentimentData({
           ...data,
           total_pos,
@@ -75,9 +99,7 @@ const Home = () => {
 
   return (
     <div className="mt-12 p-4 md:p-6">
-      {/* Header Section */}
       <div className="flex flex-wrap lg:flex-nowrap justify-between gap-4">
-        {/* Main Card */}
         <div className="bg-white dark:text-gray-500 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-6 pt-8 bg-hero-pattern bg-no-repeat bg-cover bg-center shadow-md hover:shadow-lg transition-shadow">
           <div className="flex justify-between items-center h-full">
             <div>
@@ -96,7 +118,6 @@ const Home = () => {
           </div>
         </div>
         <div className="w-[2px] bg-gray-300 h-auto"></div>
-        {/* Stats Cards */}
         <div className="flex flex-wrap justify-center items-center gap-4">
           {earningData.map((item) => (
             <div
@@ -111,7 +132,11 @@ const Home = () => {
                 {item.icon}
               </button>
               <p className="mt-3">
-                <span className="text-lg font-semibold">{item.title === "Negative Feedback Alerts" ? sentimentData.total_neg : item.title === "Social Media Mentions" ? sentimentData.total_pos + sentimentData.total_neg :  item.amount}</span>
+                <span className="text-lg font-semibold">
+                  {item.title === "Negative Feedback Alerts" ? sentimentData.total_neg :
+                    item.title === "Social Media Mentions" ? (sentimentData.total_pos || 0) + (sentimentData.total_neg || 0) :
+                      item.amount}
+                </span>
               </p>
               <p className="text-sm text-gray-400 mt-1">{item.title}</p>
             </div>
@@ -119,28 +144,22 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Main Content Section */}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Sentiment Analysis Section */}
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md lg:col-span-2">
           <div className="flex justify-between items-center mb-6">
             <p className="font-semibold text-xl">Sentiment Analysis</p>
             <div className="flex items-center gap-4">
               <p className="flex items-center gap-2 text-blue-400 hover:drop-shadow-xl">
-                <span><GoPrimitiveDot /></span>
-                <span>Positive</span>
+                <span><GoPrimitiveDot /></span><span>Positive</span>
               </p>
               <p className="flex items-center gap-2 text-green-400 hover:drop-shadow-xl">
-                <span><GoPrimitiveDot /></span>
-                <span>Negative</span>
+                <span><GoPrimitiveDot /></span><span>Negative</span>
               </p>
               <p className="flex items-center gap-2 text-gray-400 hover:drop-shadow-xl">
-                <span><GoPrimitiveDot /></span>
-                <span>Neutral</span>
+                <span><GoPrimitiveDot /></span><span>Neutral</span>
               </p>
             </div>
           </div>
-          
           <div className="flex flex-col md:flex-row gap-6">
             <div className="border-r-0 md:border-r-1 border-color pr-0 md:pr-6">
               <div className="mb-6">
@@ -167,68 +186,50 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Social Media Cards */}
         <div className="space-y-4">
-        <Link to="/twitter-analytics">
-          <div
-            className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md"
-            style={{ backgroundColor: 'rgb(3, 201, 215)' }}
-          >
-            <div className="flex justify-between items-center h-full">
+          <Link to="/twitter-analytics">
+            <div className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md" style={{ backgroundColor: 'rgb(3, 201, 215)' }}>
+              <div className="flex justify-between items-center h-full">
+                <div>
+                  <p className="text-2xl text-white font-semibold flex items-center gap-2">
+                    <FaTwitter size={28} /> Twitter
+                  </p>
+                  <p className="text-gray-200 mt-2">
+                    Positive: {sentimentData.platforms?.twitter?.positive?.toFixed(2) || 0} | Negative: {sentimentData.platforms?.twitter?.negative?.toFixed(2) || 0}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link to="/instagram-analytics">
+            <div className="mb-6 rounded-2xl p-6 flex justify-between items-center cursor-pointer hover:scale-[1.02] transition-transform shadow-md text-white"
+              style={{ background: 'linear-gradient(135deg, #feda75, #d62976, #4f5bd5)' }}>
               <div>
-                <p className="text-2xl text-white font-semibold flex items-center gap-2">
-                  <FaTwitter size={28} />
-                  Twitter
+                <p className="text-2xl font-semibold flex items-center gap-2">
+                  <FaInstagram size={28} /> Instagram
                 </p>
-                <p className="text-gray-200 mt-2">
-                  Positive: {sentimentData.x_poss} | Negative: {sentimentData.x_neg}
+                <p className="mt-2 text-white text-opacity-90">
+                  Positive: {sentimentData.platforms?.instagram?.positive?.toFixed(2) || 0} | Negative: {sentimentData.platforms?.instagram?.negative?.toFixed(2) || 0}
                 </p>
               </div>
             </div>
-          </div>
-        </Link>
-
-        <Link to="/instagram-analytics">
-          <div
-            className="mb-6 rounded-2xl p-6 flex justify-between items-center cursor-pointer hover:scale-[1.02] transition-transform shadow-md text-white"
-            style={{
-              background: 'linear-gradient(135deg, #feda75, #d62976, #4f5bd5)',
-            }}
-          >
-            <div>
-              <p className="text-2xl font-semibold flex items-center gap-2">
-                <FaInstagram size={28} />
-                Instagram
-              </p>
-              <p className="mt-2 text-white text-opacity-90">
-                Positive: {sentimentData.insta_poss} | Negative: {sentimentData.insta_neg}
-              </p>
-            </div>
-          </div>
-        </Link>
-
-        <Link to="/youtube-analytics">
-          <div
-            className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md"
-            style={{ backgroundColor: '#FF0000' }}
-          >
-            <div className="flex justify-between items-center h-full">
-              <div>
-                <p className="text-2xl text-white font-semibold flex items-center gap-2">
-                  <FaYoutube size={28} />
-                  YouTube
-                </p>
-                <p className="text-gray-200 mt-2">Detailed Sentiment Analysis</p>
+          </Link>
+          <Link to="/youtube-analytics">
+            <div className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md" style={{ backgroundColor: '#FF0000' }}>
+              <div className="flex justify-between items-center h-full">
+                <div>
+                  <p className="text-2xl text-white font-semibold flex items-center gap-2">
+                    <FaYoutube size={28} /> YouTube
+                  </p>
+                  <p className="text-gray-200 mt-2">Detailed Sentiment Analysis</p>
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
+          </Link>
         </div>
       </div>
 
-      {/* Bottom Section */}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Trending Now */}
         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md">
           <div className="flex justify-between items-center mb-6">
             <p className="text-xl font-semibold">Trending Now</p>
@@ -237,14 +238,7 @@ const Home = () => {
             {trending.map((item) => (
               <div key={item.title} className="flex justify-between items-center">
                 <div className="flex gap-4 items-center">
-                  <button
-                    type='button'
-                    style={{
-                      color: item.iconColor,
-                      backgroundColor: item.iconBg
-                    }}
-                    className='text-xl rounded-lg p-3 hover:drop-shadow-xl'
-                  >
+                  <button type='button' style={{ color: item.iconColor, backgroundColor: item.iconBg }} className='text-xl rounded-lg p-3 hover:drop-shadow-xl'>
                     {item.icon}
                   </button>
                   <div>
@@ -261,7 +255,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Sentiments Overview */}
         <div className='bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl shadow-md lg:col-span-2'>
           <div className="flex justify-between items-center mb-6">
             <p className="text-xl font-semibold">Sentiments Overview</p>
