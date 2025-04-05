@@ -87,6 +87,36 @@ const InstaPage = () => {
 
   return (
     <div className="mt-12">
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl m-6 p-6 shadow-lg">
+        <h2 className="text-xl font-semibold mb-4">Recent Posts</h2>
+        <div className="space-y-4">
+          {data.recent_posts.map((post, index) => {
+            const postTime = new Date(post.timestamp).toLocaleTimeString([], { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            });
+            return (
+              <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
+                <div className="block mb-2">
+                  {post.text}
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className={`px-2 py-1 rounded-full ${
+                    sentimentLabels[post.sentiment] === 'Positive' 
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                      : sentimentLabels[post.sentiment] === 'Negative' 
+                        ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' 
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
+                  }`}>
+                    {sentimentLabels[post.sentiment]}
+                  </span>
+                  <span className="text-gray-500">{postTime}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
       <div className="flex items-center m-6">
         <Link to="/" className="flex items-center mr-4">
           <BsArrowLeft className="text-2xl" />
@@ -159,36 +189,7 @@ const InstaPage = () => {
         </div>
       </div>
 
-      <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl m-6 p-6 shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Recent Posts</h2>
-        <div className="space-y-4">
-          {data.recent_posts.map((post, index) => {
-            const postTime = new Date(post.timestamp).toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit' 
-            });
-            return (
-              <div key={index} className="border-b border-gray-200 dark:border-gray-700 pb-4">
-                <div className="block mb-2">
-                  {post.text}
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className={`px-2 py-1 rounded-full ${
-                    sentimentLabels[post.sentiment] === 'Positive' 
-                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                      : sentimentLabels[post.sentiment] === 'Negative' 
-                        ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' 
-                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-                  }`}>
-                    {sentimentLabels[post.sentiment]}
-                  </span>
-                  <span className="text-gray-500">{postTime}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      
     </div>
   );
 };
