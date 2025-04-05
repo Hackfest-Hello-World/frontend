@@ -476,6 +476,10 @@ export const links = [
         name: 'Home',
         icon: <BiHomeCircle />,
       },
+      {
+        name: 'LiveForms',
+        icon: <FiEdit />,
+      }
     ],
   },
   // {
@@ -585,7 +589,7 @@ export const earningData = [
   },
   {
     icon: <FiBarChart />,
-    amount: '423,39',
+    amount: '4',
     percentage: '+38%',
     title: 'Review Platforms',
     iconColor: 'rgb(228, 106, 118)',

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCurrencyDollar } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { GoPrimitiveDot } from 'react-icons/go';
+import { FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { IoIosMore } from 'react-icons/io';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Doughnut, LineChart, SparkLine, Stacked, Button } from '../components';
@@ -33,6 +34,44 @@ const DropDown = ({ currentMode }) => (
 
 const Home = () => {
   const { currentColor, currentMode } = useStateContext();
+  const [sentimentData, setSentimentData] = useState({
+    x_poss: 25,
+    x_neg: 17,
+    insta_poss: 23,
+    insta_neg: 12,
+    total_pos: 48,
+    total_neg: 29,
+    total_neutral: 23,
+    overallSentiment: 'Positive'
+  });
+
+  useEffect(() => {
+    const fetchSentimentData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/');
+        const data = await response.json();
+
+        console.log('Fetched data:', data);
+        
+        const total_pos = data.x_poss + data.insta_poss;
+        const total_neg = data.x_neg + data.insta_neg;
+        const total_neutral = data.total_neutral || 0; // Assuming total_neutral is part of the response
+        const overallSentiment = total_neg > total_pos ? 'Negative' : 'Positive';
+        
+        setSentimentData({
+          ...data,
+          total_pos,
+          total_neg,
+          total_neutral,
+          overallSentiment
+        });
+      } catch (error) {
+        console.error('Error fetching sentiment data:', error);
+      }
+    };
+
+    fetchSentimentData();
+  }, []);
 
   return (
     <div className="mt-12 p-4 md:p-6">
@@ -43,7 +82,7 @@ const Home = () => {
           <div className="flex justify-between items-center h-full">
             <div>
               <p className="font-bold text-gray-400 text-sm">Overall Sentiment</p>
-              <p className="text-2xl font-bold mt-1">Positive</p>
+              <p className="text-2xl font-bold mt-1">{sentimentData.overallSentiment}</p>
               <div className="mt-4">
                 <Button
                   color='white'
@@ -72,7 +111,7 @@ const Home = () => {
                 {item.icon}
               </button>
               <p className="mt-3">
-                <span className="text-lg font-semibold">{item.amount}</span>
+                <span className="text-lg font-semibold">{item.title === "Negative Feedback Alerts" ? sentimentData.total_neg : item.title === "Social Media Mentions" ? sentimentData.total_pos + sentimentData.total_neg :  item.amount}</span>
               </p>
               <p className="text-sm text-gray-400 mt-1">{item.title}</p>
             </div>
@@ -106,7 +145,7 @@ const Home = () => {
             <div className="border-r-0 md:border-r-1 border-color pr-0 md:pr-6">
               <div className="mb-6">
                 <p className="flex items-center">
-                  <span className="text-3xl font-semibold">93,438</span>
+                  <span className="text-3xl font-semibold">{sentimentData.total_pos}</span>
                   <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
                     23%
                   </span>
@@ -114,11 +153,11 @@ const Home = () => {
                 <p className="text-gray-500 mt-1">Positive</p>
               </div>
               <div className="mb-6">
-                <p className='text-3xl font-semibold'>48,487</p>
+                <p className='text-3xl font-semibold'>{sentimentData.total_neg}</p>
                 <p className="text-gray-500 mt-1">Negative</p>
               </div>
               <div>
-                <p className='text-3xl font-semibold'>48,487</p>
+                <p className='text-3xl font-semibold'>{sentimentData.total_neutral}</p>
                 <p className="text-gray-500 mt-1">Neutral</p>
               </div>
             </div>
@@ -130,42 +169,60 @@ const Home = () => {
 
         {/* Social Media Cards */}
         <div className="space-y-4">
-          <Link to="/twitter-analytics">
-            <div
-              className='rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md'
-              style={{ backgroundColor: currentColor }}
-            >
-              <div className="flex justify-between items-center h-full">
-                <div>
-                  <p className="text-2xl text-white font-semibold">Twitter</p>
-                  <p className="text-gray-200 mt-2">Detailed Sentiment Analysis</p>
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          <Link to="/instagram-analytics">
-            <div className='bg-white dark:text-gray-200 mb-6 dark:bg-secondary-dark-bg rounded-2xl p-6 flex justify-between items-center cursor-pointer hover:scale-[1.02] transition-transform shadow-md'>
+        <Link to="/twitter-analytics">
+          <div
+            className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md"
+            style={{ backgroundColor: 'rgb(3, 201, 215)' }}
+          >
+            <div className="flex justify-between items-center h-full">
               <div>
-                <p className="text-2xl font-semibold">Instagram</p>
-                <p className="text-gray-400 mt-2">Detailed Sentiment Analysis</p>
+                <p className="text-2xl text-white font-semibold flex items-center gap-2">
+                  <FaTwitter size={28} />
+                  Twitter
+                </p>
+                <p className="text-gray-200 mt-2">
+                  Positive: {sentimentData.x_poss} | Negative: {sentimentData.x_neg}
+                </p>
               </div>
             </div>
-          </Link>
+          </div>
+        </Link>
 
-          <Link to="/youtube-analytics">
-            <div
-              className='rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md'
-              style={{ backgroundColor: currentColor }}
-            >
-              <div className="flex justify-between items-center h-full">
-                <div>
-                  <p className="text-2xl text-white font-semibold">Youtube</p>
-                  <p className="text-gray-200 mt-2">Detailed Sentiment Analysis</p>
-                </div>
+        <Link to="/instagram-analytics">
+          <div
+            className="mb-6 rounded-2xl p-6 flex justify-between items-center cursor-pointer hover:scale-[1.02] transition-transform shadow-md text-white"
+            style={{
+              background: 'linear-gradient(135deg, #feda75, #d62976, #4f5bd5)',
+            }}
+          >
+            <div>
+              <p className="text-2xl font-semibold flex items-center gap-2">
+                <FaInstagram size={28} />
+                Instagram
+              </p>
+              <p className="mt-2 text-white text-opacity-90">
+                Positive: {sentimentData.insta_poss} | Negative: {sentimentData.insta_neg}
+              </p>
+            </div>
+          </div>
+        </Link>
+
+        <Link to="/youtube-analytics">
+          <div
+            className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md"
+            style={{ backgroundColor: '#FF0000' }}
+          >
+            <div className="flex justify-between items-center h-full">
+              <div>
+                <p className="text-2xl text-white font-semibold flex items-center gap-2">
+                  <FaYoutube size={28} />
+                  YouTube
+                </p>
+                <p className="text-gray-200 mt-2">Detailed Sentiment Analysis</p>
               </div>
             </div>
-          </Link>
+          </div>
+        </Link>
         </div>
       </div>
 

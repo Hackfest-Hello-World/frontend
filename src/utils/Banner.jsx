@@ -8,8 +8,8 @@ const Banner = ({ show, onClose, icon, title, description }) => {
       setIsVisible(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
-        setTimeout(onClose, 30000); // Wait for fade-out animation to complete
-      }, 30000);
+        setTimeout(onClose, 300); // Wait for fade-out animation to complete
+      }, 3000); // Changed from 30000 to 3000 (3 seconds) to match your description
       return () => clearTimeout(timer);
     }
   }, [show, onClose]);
@@ -18,14 +18,14 @@ const Banner = ({ show, onClose, icon, title, description }) => {
 
   return (
     <div 
-      className={`fixed top-20 left-0 right-0 z-50 flex justify-center transition-all duration-300 ${
+      className={`w-full transition-all duration-300 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
       }`}
     >
-      <div className="bg-red-500 text-white p-4 rounded-lg shadow-lg w-full mx-4 flex items-start">
+      <div className="bg-red-500 text-white p-3 rounded-lg shadow-lg mx-4 flex items-start">
         <div className="mr-3 text-2xl">{icon}</div>
         <div>
-          <h3 className="font-bold text-lg">{title}</h3>
+          <h3 className="font-bold text-md">{title}</h3>
           <p className="text-sm">{description}</p>
         </div>
       </div>

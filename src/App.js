@@ -6,6 +6,7 @@ import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { useStateContext } from './contexts/ContextProvider';
 import SocialMediaPage from './pages/SocialMediaPage';
+import LiveForms from './pages/LiveForms';
 import { Home } from './pages';
 import { FaExclamationTriangle } from 'react-icons/fa';
 
@@ -30,15 +31,6 @@ export const App = () => {
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
-          {/* Banner Component */}
-          <Banner
-            show={showBanner}
-            onClose={() => setShowBanner(false)}
-            icon={<FaExclamationTriangle />}
-            title="Important Notification"
-            description="This is a temporary banner that will disappear in 3 seconds."
-          />
-
           {/* Test Button */}
           <div className="fixed left-4 bottom-4 z-1000">
             <button
@@ -51,7 +43,6 @@ export const App = () => {
             </button>
           </div>
 
-          {/* Rest of your existing code... */}
           <div className="fixed right-4 bottom-4" style={{ zIndex: '1000' }}>
             <TooltipComponent content="Settings" position="Top">
               <button
@@ -85,12 +76,25 @@ export const App = () => {
             <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
               <Navbar />
             </div>
+            
+            {/* Banner placed right after navbar */}
+            <div className="mt-16"> {/* Adjust this margin to match your navbar height */}
+              <Banner
+                show={showBanner}
+                onClose={() => setShowBanner(false)}
+                icon={<FaExclamationTriangle />}
+                title="Important Notification"
+                description="This is a temporary banner that will disappear in 3 seconds."
+              />
+            </div>
+
             <div>
               {themeSettings && <ThemeSettings />}
 
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/liveforms" element={<LiveForms />} />
                 <Route path="/twitter-analytics" element={<SocialMediaPage platform="twitter" />} />
                 <Route path="/instagram-analytics" element={<SocialMediaPage platform="instagram" />} />
                 <Route path="/youtube-analytics" element={<SocialMediaPage platform="youtube" />} />
