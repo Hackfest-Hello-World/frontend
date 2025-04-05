@@ -38,44 +38,45 @@ const Home = () => {
   useEffect(() => {
     const fetchSentimentData = async () => {
       try {
-        // const response = await fetch('https://api.example.com/sentiment-data'); // Replace with your API endpoint
-        // const data = await response.json();
-        const data = {
-          "overall": {
-            "negative": {
-              "count": 64,
-              "percentage": 37.21
-            },
-            "neutral": {
-              "count": 0,
-              "percentage": 0.0
-            },
-            "positive": {
-              "count": 108,
-              "percentage": 62.79
-            },
-            "total": 172
-          },
-          "platforms": {
-            "instagram": {
-              "negative": 12.5,
-              "neutral": 0.0,
-              "positive": 87.5
-            },
-            "twitter": {
-              "negative": 38.41,
-              "neutral": 0.0,
-              "positive": 61.59
-            },
-            "youtube": {
-              "negative": 0,
-              "neutral": 0,
-              "positive": 0
-            }
-          },
-          "trend_insta": [],
-          "trend_twitter": []
-        };
+        const response = await fetch('https://5qb2m665-5010.inc1.devtunnels.ms/'); // Replace with your API endpoint
+        console.log('Response:', response);
+        const data = await response.json();
+        // const data = {
+        //   "overall": {
+        //     "negative": {
+        //       "count": 64,
+        //       "percentage": 37.21
+        //     },
+        //     "neutral": {
+        //       "count": 0,
+        //       "percentage": 0.0
+        //     },
+        //     "positive": {
+        //       "count": 108,
+        //       "percentage": 62.79
+        //     },
+        //     "total": 172
+        //   },
+        //   "platforms": {
+        //     "instagram": {
+        //       "negative": 12.5,
+        //       "neutral": 0.0,
+        //       "positive": 87.5
+        //     },
+        //     "twitter": {
+        //       "negative": 38.41,
+        //       "neutral": 0.0,
+        //       "positive": 61.59
+        //     },
+        //     "youtube": {
+        //       "negative": 0,
+        //       "neutral": 0,
+        //       "positive": 0
+        //     }
+        //   },
+        //   "trend_insta": [],
+        //   "trend_twitter": []
+        // };
 
         const total_pos = data.overall.positive.count;
         const total_neg = data.overall.negative.count;
@@ -181,13 +182,13 @@ const Home = () => {
               </div>
             </div>
             <div className="flex-1">
-              <Stacked currentMode={currentMode} width='100%' height='300px' />
+              <Stacked currentMode={currentMode} width='90%' height='300px' />
             </div>
           </div>
         </div>
 
         <div className="space-y-4">
-          <Link to="/twitter-analytics">
+          <Link to="/twitter-analytics" state={{ platform: 'twitter-analysis' }}>
             <div className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md" style={{ backgroundColor: 'rgb(3, 201, 215)' }}>
               <div className="flex justify-between items-center h-full">
                 <div>
@@ -195,13 +196,13 @@ const Home = () => {
                     <FaTwitter size={28} /> Twitter
                   </p>
                   <p className="text-gray-200 mt-2">
-                    Positive: {sentimentData.platforms?.twitter?.positive?.toFixed(2) || 0} | Negative: {sentimentData.platforms?.twitter?.negative?.toFixed(2) || 0}
+                    Positive%: {sentimentData.platforms?.twitter?.positive?.toFixed(2) || 0} | Negative%: {sentimentData.platforms?.twitter?.negative?.toFixed(2) || 0}
                   </p>
                 </div>
               </div>
             </div>
           </Link>
-          <Link to="/instagram-analytics">
+          <Link to="/instagram-analytics" state={{ platform: 'insta-analysis' }}>
             <div className="mb-6 rounded-2xl p-6 flex justify-between items-center cursor-pointer hover:scale-[1.02] transition-transform shadow-md text-white"
               style={{ background: 'linear-gradient(135deg, #feda75, #d62976, #4f5bd5)' }}>
               <div>
@@ -209,19 +210,19 @@ const Home = () => {
                   <FaInstagram size={28} /> Instagram
                 </p>
                 <p className="mt-2 text-white text-opacity-90">
-                  Positive: {sentimentData.platforms?.instagram?.positive?.toFixed(2) || 0} | Negative: {sentimentData.platforms?.instagram?.negative?.toFixed(2) || 0}
+                  Positive%: {sentimentData.platforms?.instagram?.positive?.toFixed(2) || 0} | Negative%: {sentimentData.platforms?.instagram?.negative?.toFixed(2) || 0}
                 </p>
               </div>
             </div>
           </Link>
-          <Link to="/youtube-analytics">
+          <Link to="/youtube-analsis">
             <div className="rounded-2xl p-6 cursor-pointer mb-6 hover:scale-[1.02] transition-transform shadow-md" style={{ backgroundColor: '#FF0000' }}>
               <div className="flex justify-between items-center h-full">
                 <div>
                   <p className="text-2xl text-white font-semibold flex items-center gap-2">
                     <FaYoutube size={28} /> YouTube
                   </p>
-                  <p className="text-gray-200 mt-2">Detailed Sentiment Analysis</p>
+                  <p className="text-gray-200 mt-2">Coming soon</p>
                 </div>
               </div>
             </div>

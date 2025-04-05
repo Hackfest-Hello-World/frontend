@@ -95,9 +95,9 @@ export const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/liveforms" element={<LiveForms />} />
-                <Route path="/twitter-analytics" element={<SocialMediaPage platform="twitter" />} />
-                <Route path="/instagram-analytics" element={<SocialMediaPage platform="instagram" />} />
-                <Route path="/youtube-analytics" element={<SocialMediaPage platform="youtube" />} />
+                <Route path="/twitter-analytics" element={<SocialMediaPage />} />
+                <Route path="/instagram-analytics" element={<SocialMediaPage  />} />
+                <Route path="/youtube-analytics" element={<SocialMediaPage />} />
               </Routes>
             </div>
             <Footer />
