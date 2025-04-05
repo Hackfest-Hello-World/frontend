@@ -147,7 +147,7 @@ const Home = () => {
                 <p className="flex items-center">
                   <span className="text-3xl font-semibold">{sentimentData.total_pos}</span>
                   <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
-                    23%
+                    {((sentimentData.total_pos / (sentimentData.total_pos + sentimentData.total_neg + sentimentData.total_neutral)) * 100).toFixed(2)}%
                   </span>
                 </p>
                 <p className="text-gray-500 mt-1">Positive</p>
