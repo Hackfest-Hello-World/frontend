@@ -85,7 +85,7 @@ const Home = () => {
 
         const total_pos = data.overall.positive.count
         const total_neg = data.overall.negative.count
-        const total_neutral = data.overall.neutral.count || 0
+        const total_neutral = data.overall.neutral.count
         const overallSentiment = total_neg > total_pos ? 'Negative' : 'Positive'
 
         setSentimentData({
@@ -242,6 +242,9 @@ const Home = () => {
                     | Negative%:{' '}
                     {sentimentData.platforms?.twitter?.negative?.toFixed(2) ||
                       0}
+                    | Neutral%:{' '}
+                    {sentimentData.platforms?.twitter?.neutral?.toFixed(2) ||
+                      0}{' '}
                   </p>
                 </div>
               </div>
@@ -269,6 +272,9 @@ const Home = () => {
                   | Negative%:{' '}
                   {sentimentData.platforms?.instagram?.negative?.toFixed(2) ||
                     0}
+                  | Neutral%:{' '}
+                    {sentimentData.platforms?.instagram?.neutral?.toFixed(2) ||
+                      0}{' '}
                 </p>
               </div>
             </div>
@@ -283,7 +289,17 @@ const Home = () => {
                   <p className='text-2xl text-white font-semibold flex items-center gap-2'>
                     <FaYoutube size={28} /> YouTube
                   </p>
-                  <p className='text-gray-200 mt-2'>Coming soon</p>
+                  <p className='mt-2 text-white text-opacity-90'>
+                  Positive%:{' '}
+                  {sentimentData.platforms?.youtube?.positive?.toFixed(2) ||
+                    0}{' '}
+                  | Negative%:{' '}
+                  {sentimentData.platforms?.youtube?.negative?.toFixed(2) ||
+                    0}
+                  | Neutral%:{' '}
+                    {sentimentData.platforms?.youtube?.neutral?.toFixed(2) ||
+                      0}{' '}
+                </p>
                 </div>
               </div>
             </div>

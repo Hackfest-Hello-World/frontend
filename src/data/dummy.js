@@ -21,7 +21,7 @@ import product4 from './product4.jpg';
 import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
-
+import { MdVideoCameraBack } from 'react-icons/md';
 export const gridOrderImage = (props) => (
   <div>
     <img
@@ -479,6 +479,10 @@ export const links = [
       {
         name: 'LiveForms',
         icon: <FiEdit />,
+      },
+      {
+        name: 'Surveillance',
+        icon: <MdVideoCameraBack />,
       }
     ],
   },

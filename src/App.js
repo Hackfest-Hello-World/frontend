@@ -13,6 +13,7 @@ import InstaPage from './pages/InstaPage'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css'
 import YoutubePage from './pages/YoutubePage'
+import Surveillance from './pages/Surveillance';
 
 export const App = () => {
   const {
@@ -191,6 +192,7 @@ export const App = () => {
                   />
                   <Route path='/instagram-analytics' element={<InstaPage />} />
                   <Route path='/youtube-analytics' element={<YoutubePage />} />
+                  <Route path="/surveillance" element={<Surveillance />} />
                 </Routes>
               </div>
               <Footer />
