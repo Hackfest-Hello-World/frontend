@@ -57,7 +57,7 @@ const EventChatify = () => {
         category: messageType
       };
      setIsLoading(true);
-      await axios.post('http://localhost:8000/api/messages', messageData);
+      await axios.post('http://localhost:5000/api/messages', messageData);
       setNewMessage('');
       fetchMessages();
     } catch (error) {
@@ -76,7 +76,7 @@ const EventChatify = () => {
         thread_id: threadId
       };
 
-      await axios.post('http://localhost:8000/api/messages', replyData);
+      await axios.post('http://localhost:5000/api/messages', replyData);
       setReplyContent('');
       setReplyingTo(null);
       fetchMessages();
