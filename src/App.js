@@ -196,7 +196,7 @@ export const App = () => {
                   <Route path='/youtube-analytics' element={<YoutubePage />} />
                   <Route path="/surveillance" element={<Surveillance />} />
                   <Route path='/chatify' element={<Chatify />} />
-                  <Route path='/forum-analytics' element={<ForumAnalyticsPage />} />
+                  <Route path='/ForumAnalytics' element={<ForumAnalyticsPage />} />
                 </Routes>
               </div>
               <Footer />

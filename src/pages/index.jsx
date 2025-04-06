@@ -1,6 +1,7 @@
 export { default as Home } from './Home'
 // Charts
-// export { default as Line } from './Charts/Line'
+
+// export { default as ForumAnalyticsPage } from './ForumAnalyticsPage'
 // export { default as Pie } from './Charts/Pie'
 // export { default as StackedChart } from './Charts/Stacked'
 // export { default as Area } from './Charts/Area'

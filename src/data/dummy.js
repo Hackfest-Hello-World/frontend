@@ -495,7 +495,7 @@ export const links = [
         icon: <FiMessageSquare />, // Import from react-icons/fi
       },
       {
-        name : 'Forum Analytics',
+        name : 'ForumAnalytics',
         icon: <SiCodeforces />, // Import from react-icons/fi
       }
     ]
