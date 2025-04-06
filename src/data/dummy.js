@@ -1,15 +1,15 @@
 import React from 'react';
 import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock } from 'react-icons/ai';
-import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
+import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart, FiMessageSquare } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsTwitter, BsInstagram, BsYoutube, BsLinkedin, BsFacebook } from 'react-icons/bs';
-import { BiColorFill, BiHomeCircle } from 'react-icons/bi';
-import { IoMdContacts } from 'react-icons/io';
+import { BiAnalyse, BiColorFill, BiHomeCircle } from 'react-icons/bi';
+import { IoMdAnalytics, IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { TiTick } from 'react-icons/ti';
 import { GiLouvrePyramid } from 'react-icons/gi';
-import { GrLocation } from 'react-icons/gr';
+import { GrAnalytics, GrLocation } from 'react-icons/gr';
 import avatar from './avatar.jpg';
 import avatar2 from './avatar2.jpg';
 import avatar3 from './avatar3.png';
@@ -486,13 +486,19 @@ export const links = [
       }
     ],
   },
-  // {
-  //   title: 'Charts',
-  //   links: [
-  //     {
-  //       name: 'line',
-  //       icon: <AiOutlineStock />,
-  //     },
+  {
+    title: 'Chat Forum',
+    links: [
+      {
+        name : 'Chatify',
+        icon: <FiMessageSquare />, // Import from react-icons/fi
+      },
+      {
+        name : 'Forum Analytics',
+        icon: <IoMdAnalytics />, // Import from react-icons/fi
+      }
+    ]
+    }
   //     {
   //       name: 'area',
   //       icon: <AiOutlineAreaChart />,
