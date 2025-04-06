@@ -22,6 +22,7 @@ import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import { MdVideoCameraBack } from 'react-icons/md';
+import { SiCodeforces } from 'react-icons/si';
 export const gridOrderImage = (props) => (
   <div>
     <img
@@ -495,7 +496,7 @@ export const links = [
       },
       {
         name : 'Forum Analytics',
-        icon: <IoMdAnalytics />, // Import from react-icons/fi
+        icon: <SiCodeforces />, // Import from react-icons/fi
       }
     ]
     }
