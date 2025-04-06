@@ -98,6 +98,14 @@ const InstaPage = () => {
 
   return (
     <div className='mt-12'>
+      <div className='flex items-center m-6'>
+        <Link to='/' className='flex items-center mr-4'>
+          <BsArrowLeft className='text-2xl' />
+        </Link>
+        <h1 className='text-3xl font-bold capitalize'>
+          {data.platform} Analytics
+        </h1>
+      </div>
       <div className='bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl m-6 p-6 shadow-lg'>
         <h2 className='text-xl font-semibold mb-4'>Recent Posts</h2>
         <div className='space-y-4'>
@@ -126,13 +134,27 @@ const InstaPage = () => {
                 : negative_count > positive_count
                 ? 'LABEL_0'
                 : 'LABEL_2'
-            console.log(post.score)
             return (
               <div
                 key={index}
                 className='border-b border-gray-200 dark:border-gray-700 pb-4'
               >
-                <div className='block mb-2'>{post.caption}</div>
+                <div className='block mb-2 overflow-hidden'>
+                  {(() => {
+                    // Limit caption to 3 lines programmatically
+                    const lines = post.caption.split('\n')
+                    let truncatedCaption = lines.slice(0, 3).join('\n')
+
+                    if (lines.length > 3 || post.caption.length > 500) {
+                      truncatedCaption =
+                        lines.length > 3
+                          ? lines.slice(0, 3).join('\n') + '...'
+                          : post.caption.substring(0, 300) + '...'
+                    }
+
+                    return truncatedCaption
+                  })()}
+                </div>
                 <div className='flex justify-between text-sm'>
                   <span
                     className={`px-2 py-1 rounded-full ${
@@ -145,20 +167,21 @@ const InstaPage = () => {
                   >
                     {sentimentLabels[post.sentiment]}
                   </span>
+                  <div>
+                    <a
+                      href={post.url}
+                      target='_blank'
+                      className='rounded-xl p-1 px-3 bg-blue-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    >
+                      Post Link
+                    </a>
+                  </div>
                   <span className='text-gray-500'>{postTime}</span>
                 </div>
               </div>
             )
           })}
         </div>
-      </div>
-      <div className='flex items-center m-6'>
-        <Link to='/' className='flex items-center mr-4'>
-          <BsArrowLeft className='text-2xl' />
-        </Link>
-        <h1 className='text-3xl font-bold capitalize'>
-          {data.platform} Analytics
-        </h1>
       </div>
 
       <div className='grid md:grid-cols-2 gap-6 mb-6'>
